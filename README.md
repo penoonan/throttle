@@ -20,7 +20,7 @@ Use:
     $response = $app->handle(Symfony\Component\HttpFoundation\Request::createFromGlobals());
     $response->send();
     $app->terminate($request, $response);
-```php
+```
 
 It works by looking at # of requests / interval of time. The default is 3600 requests per 3600 seconds - i.e., one request per second for one hour. If an IP has hit the limit, Throttle responds by sending a Symfony 403 response with the message "Rate limit exceeded".
 
@@ -33,4 +33,4 @@ For example, to limit IPs to 1 request every 10 hours, with a more colorful resp
     $stack = (new Stack\Builder())
         ->push('pno\Throttle', new Predis\Client(), 1, 36000, $response);
     ...
-```php
+```
