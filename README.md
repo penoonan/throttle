@@ -8,4 +8,17 @@ Right now, only compatible with Predis. Would like to write some adapters in the
 Use:
 
 ```php
-    
+    require_once __DIR__.'/../vendor/autoload.php';
+
+    $app = new \Silex\Application();
+
+    $stack = (new Stack\Builder())
+	    ->push('Throttle', new \Predis\Client())
+    ;
+
+    $app = $stack->resolve($app);
+
+    $response = $app->handle(Symfony\Component\HttpFoundation\Request::createFromGlobals());
+    $response->send();
+    $app->terminate($request, $response);
+```php
