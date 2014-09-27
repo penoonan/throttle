@@ -27,5 +27,8 @@ For example, to limit IPs to 2 requests every 10 seconds, with a more colorful r
     $response = new Symfony\Component\HttpFoundation\Response('STAY OFF MY LAWN!!! >(', 403);
     $stack = (new Stack\Builder())
         ->push('pno\Throttle', new Predis\Client(), 2, 10, $response);
-    ...
 ```
+
+And ah yes, lest I forget: this has been added to packagist, for the convenience, wonderment and bemusement of all:
+
+ * "pno/throttle": "dev-master"
