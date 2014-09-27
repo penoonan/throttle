@@ -55,8 +55,7 @@ class Throttle implements HttpKernelInterface{
 		$this->record($key);
 
 		if (!$this->allowed($key)) {
-			return $this->over_limit_response;
-			// BWA HA HA HAH AHAHA HAHAHAAAAAA!!!!!
+			return $this->over_limit_response; // BWA HA HA HAH AHAHA HAHAHAAAAAA!!!!!
 		}
 
 		return $this->app->handle($request);
