@@ -88,7 +88,7 @@ class Throttle implements HttpKernelInterface{
 	protected function updateProfile($key, $profile)
 	{
 		$visits = $profile->visits + 1;
-		$whitelisted = $visits < $this->max_visits;
+		$whitelisted = $visits <= $this->max_visits;
 		$expire = $profile->expire;
 		$this->client->set($key, json_encode(compact('visits', 'whitelisted', 'expire')));
 	}
