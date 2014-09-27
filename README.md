@@ -2,7 +2,7 @@
 
 Throttle is a pretty lazy ripoff of Ruby / Rack's [datagraph/rack-throttle](https://github.com/datagraph/rack-throttle) library, allowing devs to limit incoming requests from a given IP.
 
-It follows the [StackPHP](http://www.stackphp.com) middleware convention. Right now, the only cache driver it works with is Predis. I would like to write some adapters in the future to make this more configurable. Hopefully FIG passes this [proposed cache standard interface](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md) soon, because that would make it much easier.
+It follows the [StackPHP](http://www.stackphp.com) middleware convention. The only cache driver it works with is Predis. I would like to write some adapters in the future to make this more configurable. Hopefully FIG passes this [proposed cache standard interface](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md) soon, because that would make it much easier.
 
 Sample usage with a Silex App:
 
