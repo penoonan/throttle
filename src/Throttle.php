@@ -50,9 +50,11 @@ class Throttle implements HttpKernelInterface{
 
 	public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
 	{
-		$this->record($request);
+		$key = 'throttle.'.$request->getClientIp();
 
-		if (!$this->allowed($request)) {
+		$this->record($key);
+
+		if (!$this->allowed($key)) {
 			return $this->over_limit_response;
 			// BWA HA HA HAH AHAHA HAHAHAAAAAA!!!!!
 		}
@@ -60,47 +62,29 @@ class Throttle implements HttpKernelInterface{
 		return $this->app->handle($request);
 	}
 
-	protected function allowed(Request $request)
+	protected function allowed($key)
 	{
-		$key = 'throttle.' . $request->getClientIp();
-		return (bool) json_decode($this->client->get($key))->whitelisted;
+		$visits = (int) $this->client->get($key);
+		return $visits < $this->max_visits;
 	}
 
-	protected function record(Request $request)
+	protected function record($key)
 	{
-		$key = 'throttle.' . $request->getClientIp();
+		$visits = $this->client->get($key);
 
-		$profile = json_decode($this->client->get($key));
-
-		if (!$profile) {
+		if (!$visits || $visits === -1) {
 			$this->fresh($key);
 			return;
 		}
 
-		if (time() > $profile->expire) {
-			$this->fresh($key);
-			return;
-		}
-
-		$this->updateProfile($key, $profile);
-	}
-
-	protected function updateProfile($key, $profile)
-	{
-		$visits = $profile->visits + 1;
-		$whitelisted = $visits <= $this->max_visits;
-		$expire = $profile->expire;
-		$this->client->set($key, json_encode(compact('visits', 'whitelisted', 'expire')));
+		$this->client->incr($key);
 	}
 
 	protected function fresh($key)
 	{
 		$this->client->del($key);
-		$this->client->set($key, json_encode([
-			  'visits' => 1,
-			  'whitelisted' => true,
-			  'expire' => time() + $this->interval_seconds
-			]));
+		$this->client->set($key, 1);
+		$this->client->expireat($key, time() + $this->interval_seconds);
 	}
 
 } 
