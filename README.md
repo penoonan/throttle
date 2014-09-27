@@ -1,4 +1,4 @@
-#throttle
+#Throttle
 ========
 
 Quick PHP ripoff of Ruby / Rack's [datagraph/rack-throttle](https://github.com/datagraph/rack-throttle) library - limit incoming requests from a given IP
