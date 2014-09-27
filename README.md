@@ -22,11 +22,11 @@ It works by using Predis to track the number of requests that come from a partic
 
 You can override any of those defaults by passing them to Throttle's constructor:
 
-For example, to limit IPs to 1 request every 10 hours, with a more colorful response message, you could do something like this:
+For example, to limit IPs to 2 requests every 10 seconds, with a more colorful response message, you could do something like this:
 
 ```php
     $response = new Symfony\Component\HttpFoundation\Response('STAY OFF MY LAWN!!! >(', 403);
     $stack = (new Stack\Builder())
-        ->push('pno\Throttle', new Predis\Client(), 1, 36000, $response);
+        ->push('pno\Throttle', new Predis\Client(), 2, 10, $response);
     ...
 ```
