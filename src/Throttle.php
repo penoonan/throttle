@@ -56,7 +56,7 @@ class Throttle implements HttpKernelInterface{
 	protected function allowed(Request $request)
 	{
 		$key = 'throttle.' . $request->getClientIp();
-		return json_decode($this->client->get($key))->whitelisted;
+		return (bool) json_decode($this->client->get($key))->whitelisted;
 	}
 
 	protected function record(Request $request)
