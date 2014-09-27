@@ -1,0 +1,21 @@
+{
+    "name": "pno/throttle",
+    "description": "StackPHP compatible class for throttling HTTP requests using Predis. Based on datagraph/rack-throttle.",
+    "keywords": ["throttle", "stack", "php"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Patrick Noonan",
+            "email": "p.e.noonan@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "symfony/http-foundation": "~2.1",
+        "symfony/http-kernel": "~2.1",
+        "predis/predis": "1.1.*@dev"
+    },
+    "autoload": {
+        "psr-0": { "Stack": "src" }
+    }
+}
