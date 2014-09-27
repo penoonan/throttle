@@ -72,9 +72,7 @@ class Throttle implements HttpKernelInterface{
 		$visits = $this->client->get($key);
 
 		if (!$visits || $visits === -1) {
-			$this->client->set($key, 1);
 			$this->client->expireat($key, time() + $this->interval_seconds);
-			return;
 		}
 
 		$this->client->incr($key);
