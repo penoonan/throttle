@@ -1,8 +1,10 @@
 <?php
+namespace pno;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Predis\Client;
 
 class Throttle implements HttpKernelInterface{
 
@@ -30,7 +32,7 @@ class Throttle implements HttpKernelInterface{
 	 */
 	private $interval_seconds;
 
-	public function __construct(HttpKernelInterface $app, Predis\Client $client, $max_visits = 360, $interval_seconds = 3600, Response $over_limit_response = null)
+	public function __construct(HttpKernelInterface $app, Client $client, $max_visits = 360, $interval_seconds = 3600, Response $over_limit_response = null)
 	{
 		$this->app = $app;
 		$this->client = $client;
