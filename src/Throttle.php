@@ -81,7 +81,6 @@ class Throttle implements HttpKernelInterface{
 
 	protected function fresh($key)
 	{
-		$this->client->del($key);
 		$this->client->set($key, 1);
 		$this->client->expireat($key, time() + $this->interval_seconds);
 	}
