@@ -62,19 +62,38 @@ class Throttle implements HttpKernelInterface{
 	protected function record(Request $request)
 	{
 		$key = 'throttle.' . $request->getClientIp();
-		if ($profile = $this->client->get($key)) {
-			$this->updateProfile($key, json_decode($profile));
-		} else {
-			$this->client->set($key, json_encode(['visits' => 1, 'whitelisted' => true]));
-			$this->client->expireat($key, $this->interval_seconds + time());
+
+		$profile = json_decode($this->client->get($key));
+
+		if (!$profile) {
+			$this->fresh($key);
+			return;
 		}
+
+		if (time() > $profile->expire) {
+			$this->fresh($key);
+			return;
+		}
+
+		$this->updateProfile($key, $profile);
 	}
 
 	protected function updateProfile($key, $profile)
 	{
 		$visits = $profile->visits + 1;
 		$whitelisted = $visits < $this->max_visits;
-		$this->client->set($key, json_encode(compact('visits', 'whitelisted')));
+		$expire = $profile->expire;
+		$this->client->set($key, json_encode(compact('visits', 'whitelisted', 'expire')));
+	}
+
+	protected function fresh($key)
+	{
+		$this->client->del($key);
+		$this->client->set($key, json_encode([
+			  'visits' => 1,
+			  'whitelisted' => true,
+			  'expire' => time() + $this->interval_seconds
+			]));
 	}
 
 } 
