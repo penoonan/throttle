@@ -64,7 +64,7 @@ class Throttle implements HttpKernelInterface{
 	protected function allowed($key)
 	{
 		$visits = (int) $this->client->get($key);
-		return $visits < $this->max_visits;
+		return $visits <= $this->max_visits;
 	}
 
 	protected function record($key)
