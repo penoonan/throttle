@@ -15,7 +15,7 @@
         "predis/predis": "dev-master"
     },
     "autoload": {
-        "psr-0": { "pno": "src" }
+        "classmap": ["src"]
     },
     "minimum-stability": "dev"
 }
