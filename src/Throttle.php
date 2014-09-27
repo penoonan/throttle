@@ -32,6 +32,13 @@ class Throttle implements HttpKernelInterface{
 	 */
 	private $interval_seconds;
 
+	/**
+	 * @param HttpKernelInterface $app
+	 * @param Client $client
+	 * @param int $max_visits
+	 * @param int $interval_seconds
+	 * @param Response $over_limit_response
+	 */
 	public function __construct(HttpKernelInterface $app, Client $client, $max_visits = 360, $interval_seconds = 3600, Response $over_limit_response = null)
 	{
 		$this->app = $app;
