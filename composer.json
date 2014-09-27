@@ -12,7 +12,7 @@
     "require": {
         "symfony/http-foundation": "~2.1",
         "symfony/http-kernel": "~2.1",
-        "predis/predis": "1.1.*@dev"
+        "predis/predis": "dev-master"
     },
     "autoload": {
         "psr-0": { "pno": "src" }
