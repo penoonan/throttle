@@ -33,6 +33,13 @@ class Throttle implements HttpKernelInterface{
 	private $interval_seconds;
 
 	/**
+	 * Stores the cache lookup result
+	 * @var mixed
+	 */
+	private $visits;
+
+
+	/**
 	 * @param HttpKernelInterface $app
 	 * @param Client $client
 	 * @param int $max_visits
@@ -52,30 +59,23 @@ class Throttle implements HttpKernelInterface{
 	{
 		$key = 'throttle.'.$request->getClientIp();
 
-		$this->record($key);
-
-		if (!$this->allowed($key)) {
-			return $this->over_limit_response; // BWA HA HA HAH AHAHA HAHAHAAAAAA!!!!!
-		}
-
-		return $this->app->handle($request);
-	}
-
-	protected function allowed($key)
-	{
-		$visits = (int) $this->client->get($key);
-		return $visits <= $this->max_visits;
-	}
-
-	protected function record($key)
-	{
-		$visits = $this->client->get($key);
-
-		$this->client->incr($key);
-
-		if (!$visits) {
+		if ($this->visits($key) === 1) {
+			// Must be their first visit so let's set the expiration time.
 			$this->client->expireat($key, time() + $this->interval_seconds);
 		}
+
+		if ($this->visits($key) > $this->max_visits) {
+			// Busted.
+			return $this->over_limit_response;
+		}
+
+		return $this->app->handle($request, $type, $catch);
+	}
+
+	protected function visits($key)
+	{
+		if (isset($this->visits)) return $this->visits;
+		return $this->visits = $this->client->incr($key);
 	}
 
 } 
