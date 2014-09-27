@@ -16,13 +16,9 @@ Use with a Silex App:
 	    ->push('pno\Throttle', new \Predis\Client());
 
     $app = $stack->resolve($app);
-
-    $response = $app->handle(Symfony\Component\HttpFoundation\Request::createFromGlobals());
-    $response->send();
-    $app->terminate($request, $response);
 ```
 
-It works by looking at # of requests / interval of time. The default is 3600 requests per 3600 seconds - i.e., one request per second for one hour. If an IP has hit the limit, Throttle responds by sending a Symfony 403 response with the message "Rate limit exceeded".
+It works by using Predis to track the number of requests that come from a particular IP during a given interval of time. The default is 360 requests per 3600 seconds - i.e., one request per 10 seconds for each hour. If an IP has hit the limit, Throttle responds by sending a Symfony 403 response with the message "Rate limit exceeded".
 
 You can override any of those defaults by passing them to Throttle's constructor:
 
