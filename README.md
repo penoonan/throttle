@@ -17,7 +17,7 @@ Sample usage with a Silex App:
     $app = $stack->resolve($app);
 ```
 
-It works by using Predis to track the number of requests that come from a particular IP during a given interval of time. The default is 360 requests per 3600 seconds - i.e., one request per 10 seconds for each hour. If an IP has hit the limit, Throttle responds by sending a Symfony 403 response with the message "Rate limit exceeded".
+It works by tracking the number of requests that come from a particular IP during a given interval of time. The default limit is 360 requests per 3600 seconds - i.e., one request per 10 seconds for each hour. If an IP has hit the limit, Throttle responds by sending a Symfony 403 response with the message "Rate limit exceeded".
 
 You can override any of those defaults by passing them to Throttle's constructor:
 
