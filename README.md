@@ -24,7 +24,7 @@ You can override any of those defaults by passing them to Throttle's constructor
 If you're using the Stack\Builder class to apply your middlewares, and you would like to limit IPs to 2 requests every 10 seconds, and give a more colorful response message, you could do something like this:
 
 ```php
-    $response = new Symfony\Component\HttpFoundation\Response('STAY OFF MY LAWN!!! >(', 403);
+    $response = new Symfony\Component\HttpFoundation\Response('STAY OFF MY LAWN!!! >:(', 403);
     $stack = (new Stack\Builder())
         ->push('pno\Throttle', new Predis\Client(), 2, 10, $response);
 ```
